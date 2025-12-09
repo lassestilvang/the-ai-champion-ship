@@ -20,6 +20,7 @@ function App() {
   }, []);
 
   const fetchNotes = async () => {
+    setLoading(true);
     try {
       const response = await fetch('http://localhost:3000/api/voice-notes', {
         headers: { 'x-user-id': 'demo-user' }
@@ -28,6 +29,8 @@ function App() {
       setNotes(data.data);
     } catch (error) {
       console.error('Failed to fetch notes:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
