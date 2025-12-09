@@ -1,0 +1,32 @@
+{
+  "name": "voicenote-knowledge-base",
+  "version": "1.0.0",
+  "description": "A Raindrop MCP Server-based AI application for voice notes.",
+  "main": "dist/server/httpServer.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server/httpServer.js",
+    "dev": "ts-node src/server/httpServer.ts"
+  },
+  "keywords": [
+    "raindrop",
+    "mcp",
+    "ai",
+    "typescript"
+  ],
+  "author": "Gemini",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^20.5.0",
+    "@types/uuid": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

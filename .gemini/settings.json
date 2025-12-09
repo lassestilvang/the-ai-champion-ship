@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "raindrop-mcp": {
+      "httpUrl": "https://raindrop-mcp.01kbxfbq82a95g8qmqkbxbrp1y.lmapp.run/mcp",
+      "trust": true
+    }
+  },
+  "mcp": {
+    "excluded": ["julesServer", "snyk", "securityServer", "nanobanana"]
+  }
+}
