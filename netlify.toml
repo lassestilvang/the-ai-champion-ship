@@ -1,0 +1,22 @@
+[build]
+  command = "npm install && npm run build"
+  publish = "frontend/build"
+  functions = "netlify/functions"
+
+[dev]
+  framework = "#custom"
+  command = "npm run dev"
+  port = 3000
+  targetPort = 3000
+  publish = "frontend/build"
+  autoLaunch = false
+
+[[redirects]]
+  from = "/api/*"
+  to = "http://localhost:3000/.netlify/functions/server/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

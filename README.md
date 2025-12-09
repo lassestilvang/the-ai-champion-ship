@@ -1,131 +1,134 @@
 # VoiceNote Knowledge Base
 
-This project is a scaffold for a Raindrop MCP Server-based AI application called **VoiceNote Knowledge Base**. It allows you to submit audio notes, have them automatically transcribed and summarized, and then query the resulting knowledge base.
+A voice-first knowledge management system built for The AI Champion Ship hackathon. Users can record voice memos, which are then automatically transcribed, stored, and made searchable via voice or text queries.
 
 ## Features
 
-- **Audio Transcription**: Converts audio notes into text using a (stubbed) Vultr Whisper API.
-- **Intelligent Extraction**: Pulls out summaries and keywords from transcriptions.
-- **Vector-Based Search**: Embeds notes and performs semantic search over them.
-- **Raindrop MCP Server Integration**: Implements a 4-agent workflow within a mock Raindrop server environment.
-- **HTTP API**: Exposes simple endpoints for submitting notes and queries.
+*   **Voice Recording**: Record and upload voice memos.
+*   **Automatic Transcription**: Voice memos are automatically transcribed using Raindrop SmartInference.
+*   **Semantic Search**: Search through your voice notes using natural language queries (voice or text).
+*   **AI-Powered Answers**: Get concise answers based on your voice notes using RAG (Retrieval Augmented Generation).
+*   **Mock Caching**: Simulates Vultr Valkey/Redis for demonstration purposes.
+*   **ElevenLabs Integration**: Speech-to-text and text-to-speech for voice queries and answers.
 
-## Project Structure
+## Technical Stack
 
-```
-/
-├── src/
-│   ├── agents/             # Contains individual AI agents
-│   │   ├── TranscriptionAgent.ts
-│   │   ├── ExtractionAgent.ts
-│   │   ├── EmbeddingAgent.ts
-│   │   └── QueryAgent.ts
-│   ├── workflows/          # Defines the sequence of agent operations
-│   │   └── voiceNoteWorkflow.ts
-│   ├── server/             # Server implementation
-│   │   ├── raindropServer.ts # Mock Raindrop MCP Server setup
-│   │   └── httpServer.ts       # Express.js HTTP server
-│   └── utils/              # Shared utilities and types
-│       ├── vultrWhisperClient.ts
-│       ├── vectorDB.ts
-│       └── types.ts
-├── package.json
-├── tsconfig.json
-└── README.md
+*   **Backend**: Node.js with Express.js
+*   **Frontend**: React.js
+*   **Database**: PostgreSQL via Raindrop SmartSQL
+*   **AI/ML**: LiquidMetal Raindrop SmartInference (Transcription, Embeddings, RAG)
+*   **Voice Services**: ElevenLabs API
+*   **Caching (Mocked)**: Vultr Valkey/Redis
+*   **Deployment**: Netlify
+
+## Setup Instructions
+
+### 1. Clone the repository
+
+```bash
+git clone <repository_url>
+cd voicenote-knowledge-base
 ```
 
-## Getting Started
+### 2. Environment Variables
 
-### Prerequisites
+Create a `.env` file in the root directory and populate it with your API keys and project IDs:
 
-- Node.js (v18 or later recommended)
-- npm or yarn
+```
+RAINDROP_API_KEY=your_raindrop_api_key
+RAINDROP_PROJECT_ID=your_project_id
+ELEVENLABS_API_KEY=your_elevenlabs_key
+WORKOS_API_KEY=your_workos_key
+WORKOS_CLIENT_ID=your_client_id
+```
 
-### Installation
+**Note on `raindrop-sdk`:**
+The `raindrop-sdk` is currently assumed to be a private package. If you encounter issues during `npm install` for the backend, you might need to:
+1.  **Install it locally**: If you have access to the `raindrop-sdk` package file, place it in a known location and install it using `npm install <path/to/raindrop-sdk.tgz>`.
+2.  **Private Registry**: If it's hosted on a private npm registry, ensure your `.npmrc` is configured correctly to access it.
+3.  **Mock/Stub**: For development purposes without full access, you might need to mock or stub its functionalities in your `server.js` and service files.
 
-1. Clone the repository.
-2. Install the dependencies:
-    ```bash
-    npm install
-    ```
+### 3. Install Dependencies
 
-### Running the Application
+**Backend (root directory):**
 
-You can run the application in development mode, which will automatically transpile and restart the server on changes.
+```bash
+npm install
+```
+
+**Frontend (`frontend/` directory):**
+
+```bash
+cd frontend
+npm install
+cd ..
+```
+
+### 4. Run Database Migrations
+
+This will create the necessary tables in your Raindrop SmartSQL database.
+
+```bash
+npm run migrate
+```
+
+### 5. Run the Application
+
+**Backend:**
 
 ```bash
 npm run dev
 ```
 
-This will start two servers:
-- **HTTP Server** on `http://localhost:8080`
-- **Mock Raindrop MCP Server** on port `8081`
+This will start the Express.js server on `http://localhost:3000`.
 
-For production, first build the project and then start it:
+**Frontend:**
 
 ```bash
-npm run build
-npm run start
+cd frontend
+npm start
 ```
 
-## API Endpoints
+This will start the React development server, usually on `http://localhost:3001`.
 
-### 1. Submit a Note
+The frontend is configured to communicate with the backend on `http://localhost:3000`.
 
-- **Endpoint**: `POST /api/notes`
-- **Body**: `multipart/form-data`
-- **Field**: `audio` (must be an audio file)
+## Deployment to Netlify
 
-#### Example using cURL:
+This project includes a `netlify.toml` file for easy deployment to Netlify.
 
-```bash
-curl -X POST -F "audio=@/path/to/your/audio.mp3" http://localhost:8080/api/notes
+1.  **Connect your Git repository** to Netlify.
+2.  **Configure build settings**:
+    *   **Build command**: `npm install && npm run build`
+    *   **Publish directory**: `frontend/build`
+3.  **Environment Variables**: Ensure you add all required `.env` variables (`RAINDROP_API_KEY`, `ELEVENLABS_API_KEY`, etc.) to your Netlify site settings.
+4.  The `netlify.toml` handles redirects for the API endpoints to Netlify Functions (if you choose to convert your Express app to serverless functions) and for the React SPA.
+
+## Project Structure
+
 ```
-
-- **Success Response (201)**:
-  ```json
-  {
-    "id": "a1b2c3d4-…",
-    "transcription": "This is a transcribed note…",
-    "summary": "Summary of the text: 'This is a transcribed note…'",
-    "keywords": ["transcribed", "note", "meeting"],
-    "createdAt": "2025-12-09T10:00:00.000Z"
-  }
-  ```
-
-### 2. Query Your Notes
-
-- **Endpoint**: `POST /api/query`
-- **Body**: `application/json`
-
-#### Example using cURL:
-
-```bash
-curl -X POST -H "Content-Type: application/json" \
-     -d '{"query": "what were the quarterly goals?"}' \
-     http://localhost:8080/api/query
+.
+├── .env                  # Environment variables
+├── netlify.toml          # Netlify deployment configuration
+├── package.json          # Backend dependencies and scripts
+├── server.js             # Main Express.js API server
+├── migrations/
+│   ├── 001_initial_schema.js # Database schema migration
+│   └── run-migrations.js     # Script to run migrations
+├── services/
+│   ├── mockVultrCache.js     # Mock for Vultr Valkey/Redis cache
+│   ├── elevenLabsService.js  # ElevenLabs API integration
+│   └── voiceNoteService.js   # Core logic for voice note processing and search
+└── frontend/
+    ├── package.json          # Frontend dependencies and scripts
+    ├── public/               # Public assets
+    ├── src/
+    │   ├── App.css           # Main CSS file (TailwindCSS)
+    │   ├── App.jsx           # Main React component
+    │   └── components/
+    │       ├── CacheStats.jsx      # Displays mock cache statistics
+    │       ├── NotesList.jsx       # Displays recorded voice notes
+    │       ├── VoiceQuery.jsx      # Component for voice-based querying
+    │       └── VoiceRecorder.jsx   # Component for recording voice memos
+    └── ...                   # Other create-react-app files
 ```
-
-- **Success Response (200)**:
-  ```json
-  {
-    "summary": "Based on your notes, here's a summary: …",
-    "citations": [
-      {
-        "noteId": "a1b2c3d4-…",
-        "textChunk": "This is a transcribed note about the team meeting. We discussed the quarterly goals…"
-      }
-    ]
-  }
-  ```
-
-## Connecting to Raindrop Desktop App
-
-*This section provides a conceptual overview, as it requires the actual Raindrop ecosystem.*
-
-1.  **Run the MCP Server**: Ensure this project is running (`npm run dev`). The `raindropServer.ts` file starts a service that the Raindrop app can connect to.
-2.  **Configure Raindrop App**: In the Raindrop Desktop App settings, you would typically find a section for "Local MCP Servers" or "Development Services".
-3.  **Add a New Service**:
-    - **Name**: VoiceNote Knowledge Base
-    - **Address**: `mcp://localhost:8081`
-4.  **Expose the Workflow**: The `raindropServer.ts` file registers agents as "tools". To make the workflow directly callable from the Raindrop App, you would expose the `runVoiceNoteWorkflow` function as a "workflow" and define its input/output schema. The app would then discover and allow you to trigger this workflow, likely by right-clicking an audio file and selecting "Process with VoiceNote KB".
