@@ -22,7 +22,7 @@ function App() {
   const fetchNotes = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/api/voice-notes', {
+      const response = await fetch('/api/voice-notes', {
         headers: { 'x-user-id': 'demo-user' }
       });
       const data = await response.json();
@@ -36,7 +36,7 @@ function App() {
 
   const fetchStats = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/stats', {
+      const response = await fetch('/api/stats', {
         headers: { 'x-user-id': 'demo-user' }
       });
       const data = await response.json();

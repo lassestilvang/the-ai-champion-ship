@@ -3,7 +3,7 @@ const multer = require('multer');
 const cors = require('cors');
 require('dotenv').config();
 
-const { RaindropClient } = require('raindrop-sdk');
+const { Raindrop } = require('@liquidmetal-ai/lm-raindrop');
 const VoiceNoteService = require('./services/voiceNoteService');
 const ElevenLabsService = require('./services/elevenLabsService');
 const mockVultrCache = require('./services/mockVultrCache');
@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // Initialize services
-const raindrop = new RaindropClient({
+const raindrop = new Raindrop({
   apiKey: process.env.RAINDROP_API_KEY,
   projectId: process.env.RAINDROP_PROJECT_ID
 });

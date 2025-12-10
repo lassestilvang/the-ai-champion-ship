@@ -12,6 +12,7 @@
   "author": "The AI Champion Ship",
   "license": "MIT",
   "dependencies": {
+    "@liquidmetal-ai/lm-raindrop": "^0.7.0",
     "axios": "^1.6.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

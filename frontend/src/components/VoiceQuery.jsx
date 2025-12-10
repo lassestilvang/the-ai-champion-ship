@@ -53,7 +53,7 @@ export default function VoiceQuery() {
       const formData = new FormData();
       formData.append('audio', audioBlob, 'query.webm');
 
-      const response = await fetch('http://localhost:3000/api/query/voice', {
+      const response = await fetch('/api/query/voice', {
         method: 'POST',
         headers: { 'x-user-id': 'demo-user' },
         body: formData

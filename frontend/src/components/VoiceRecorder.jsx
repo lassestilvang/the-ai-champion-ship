@@ -58,7 +58,7 @@ export default function VoiceRecorder({ onNoteUploaded }) {
       const formData = new FormData();
       formData.append('audio', audioBlob, 'recording.webm');
 
-      const response = await fetch('http://localhost:3000/api/voice-notes', {
+      const response = await fetch('/api/voice-notes', {
         method: 'POST',
         headers: { 'x-user-id': 'demo-user' },
         body: formData
