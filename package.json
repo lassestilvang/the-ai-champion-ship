@@ -1,26 +1,22 @@
 {
-  "name": "voicenote-knowledge-base",
+  "name": "the-ai-champion-ship",
   "version": "1.0.0",
-  "description": "A voice-first knowledge management system for The AI Champion Ship hackathon",
-  "main": "server.js",
+  "private": true,
+  "description": "LiquidMetal AI workspace",
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
-    "migrate": "node migrations/run-migrations.js"
-  },
-  "keywords": [],
-  "author": "The AI Champion Ship",
-  "license": "MIT",
-  "dependencies": {
-    "@liquidmetal-ai/lm-raindrop": "^0.7.0",
-    "axios": "^1.13.5",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "form-data": "^4.0.0",
-    "multer": "^2.1.1"
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "format": "npm run format --workspaces",
+    "clean": "npm run clean --workspaces && shx rm -rf node_modules"
   },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "shx": "^0.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
