@@ -1,0 +1,27 @@
+application "the-ai-champion-ship" {
+  
+  // === Services ===
+  // HTTP service for chat API endpoints and web UI
+  service "chat-service" {
+    visibility = "public"
+    domain {
+      cname = "the-ai-champion-ship"
+    }
+  }
+
+  // === Storage ===
+  // SmartBucket for document storage with AI-powered search
+  smartbucket "document-storage" {}
+
+  // === Databases ===
+  // SmartSQL for natural language database queries
+  smartsql "chat-database" {}
+
+  // === AI and Memory ===
+  // SmartMemory for persistent AI memory and personalization
+  smartmemory "ai-memory" {}
+
+  // === Key-Value Storage ===
+  // KV cache for fast session management (kept for compatibility)
+  kv_cache "conversation-store" {}
+}
