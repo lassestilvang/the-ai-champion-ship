@@ -1,0 +1,109 @@
+
+{
+  "agents": [
+    {
+      "name": "project-agent",
+      "description": "A general-purpose agent that provides information about the project.",
+      "commands": [
+        {
+          "name": "about",
+          "description": "Provides a brief description of the project."
+        },
+        {
+          "name": "commands",
+          "description": "Lists all the available commands for all the agents."
+        },
+        {
+          "name": "help",
+          "description": "Provides help on how to use the agents."
+        },
+        {
+          "name": "validate",
+          "description": "Validates the raindrop.json file against the schema."
+        }
+      ]
+    },
+    {
+      "name": "frontend-agent",
+      "description": "An agent that interacts with the frontend application.",
+      "commands": [
+        {
+          "name": "start",
+          "description": "Starts the frontend development server.",
+          "command": "npm start",
+          "working_directory": "frontend"
+        },
+        {
+          "name": "build",
+          "description": "Builds the frontend application for production.",
+          "command": "npm run build",
+          "working_directory": "frontend"
+        },
+        {
+          "name": "test",
+          "description": "Runs the frontend tests.",
+          "command": "npm test",
+          "working_directory": "frontend"
+        }
+      ]
+    },
+    {
+      "name": "backend-agent",
+      "description": "An agent that interacts with the backend application.",
+      "commands": [
+        {
+          "name": "start",
+          "description": "Starts the backend development server.",
+          "command": "npm run dev"
+        },
+        {
+          "name": "start:prod",
+          "description": "Starts the backend production server.",
+          "command": "npm start"
+        },
+        {
+          "name": "migrate",
+          "description": "Runs the database migrations.",
+          "command": "npm run migrate"
+        }
+      ]
+    },
+    {
+      "name": "services-agent",
+      "description": "An agent that interacts with the services.",
+      "commands": [
+        {
+          "name": "logs:elevenlabs",
+          "description": "Tails the logs for the ElevenLabs service.",
+          "command": "tail -f logs/elevenlabs.log"
+        },
+        {
+          "name": "logs:vultr",
+          "description": "Tails the logs for the Vultr cache service.",
+          "command": "tail -f logs/vultr.log"
+        },
+        {
+          "name": "logs:voicenote",
+          "description": "Tails the logs for the voice note service.",
+          "command": "tail -f logs/voicenote.log"
+        }
+      ]
+    },
+    {
+      "name": "database-agent",
+      "description": "An agent that interacts with the database.",
+      "commands": [
+        {
+          "name": "status",
+          "description": "Shows the status of the database.",
+          "command": "sqlite3 database/voicenote.db .tables"
+        },
+        {
+          "name": "connect",
+          "description": "Connects to the database.",
+          "command": "sqlite3 database/voicenote.db"
+        }
+      ]
+    }
+  ]
+}
